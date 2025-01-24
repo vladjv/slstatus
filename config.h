@@ -58,34 +58,39 @@ static const char unknown_str[] = "n/a";
  * uid                 UID of current user             NULL
  * uptime              system uptime                   NULL
  * username            username of current user        NULL
- * vol_perc            OSS/ALSA volume in percent      mixer file (/dev/mixer)
+ * volume_perc         OSS/ALSA volume in percent      mixer file (/dev/mixer)
+ * volume_status       OSS/ALSA card status            mixer file (/dev/mixer)
  *                                                     NULL on OpenBSD/FreeBSD
  * wifi_essid          WiFi ESSID                      interface name (wlan0)
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
+ *
+ * get_gpu_mode        ASUS GPU mode
+ * get_fan_mode        ASUS Fan mode
  */
 static const struct arg args[] = {
-	/* function     format      argument */
+/* function     format      argument */
 #if defined(__ASUS_AURA__)
-    { run_command,  "GPU: %s | ", "/usr/bin/supergfxctl -g"},
-    { run_command,  "PRF: %s | ", "/usr/bin/asusctl profile -p | cut -d' ' -f4"},
+    {get_gpu_mode, "GPU: %s  ", NULL},
+    {get_fan_mode, " FAN: %s  ", NULL},
 #endif
-    { keymap,       " %s | ",   NULL },
+    {keymap, "   %s  ", NULL},
 
 #if defined(__linux__)
-    //{ vol_perc,     "%s%",       "" },
-    { run_command,  "%s | ",    "/usr/bin/pamixer --get-volume-human"},
-#elif defined(__OpenBSD__)||defined(__FreeBSD__)
-    { vol_perc,     "%s% | ",   NULL },
+    {volume_status, "%s ", "default"},
+    {volume_perc, "%s  ", "default"},
+//{run_command, "%s  ", "/usr/bin/pamixer --get-volume-human"},
+#elif defined(__OpenBSD__) || defined(__FreeBSD__)
+    {vol_perc, "%s% | ", NULL},
 #endif
 
-    { wifi_essid,   "%s | ",    "wlp2s0" },
+    {wifi_essid, "  %s  ", "wlp2s0"},
 #if defined(__linux__)
-    { battery_state,"%s ",      "BAT0" },
-    { battery_perc, "%s% | ",   "BAT0" },
-#elif defined(__OpenBSD__)||defined(__FreeBSD__)
-    { battery_state,"%s ",      NULL },
-    { battery_perc, "%s% | ",   NULL },
+    {battery_state, "%s ", "BAT0"},
+    {battery_perc, "%s%  ", "BAT0"},
+#elif defined(__OpenBSD__) || defined(__FreeBSD__)
+    {battery_state, "%s ", NULL},
+    {battery_perc, "%s% | ", NULL},
 #endif
-	{ datetime,     "%s",       "%F %R" },
+    {datetime, "%s", "%F %R"},
 
 };

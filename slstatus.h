@@ -1,6 +1,19 @@
 /* See LICENSE file for copyright and license details. */
 
+typedef enum { PERC_STR, PERC_INT } PercType;
+typedef struct {
+    int perc;
+    const char *perc_repr;
+} PercInfo;
+
+// Alsa Mixer volume
+typedef struct {
+    int is_muted;
+    long volume;
+} ALSAVolume;
+
 /* battery */
+int  __get_bat_perc(const char *, PercInfo *, PercType);
 const char *battery_perc(const char *);
 const char *battery_remaining(const char *);
 const char *battery_state(const char *);
@@ -77,8 +90,16 @@ const char *uid(const char *unused);
 const char *username(const char *unused);
 
 /* volume */
-const char *vol_perc(const char *card);
+int retrieve_volume(const char *card, ALSAVolume *);
+const char *volume_perc(const char *card);
+const char *volume_status(const char *card);
 
 /* wifi */
 const char *wifi_essid(const char *interface);
 const char *wifi_perc(const char *interface);
+
+/* asus */
+#if defined(__ASUS_AURA__)
+const char *get_gpu_mode(const char *);
+const char *get_fan_mode(const char *);
+#endif

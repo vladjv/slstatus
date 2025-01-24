@@ -6,10 +6,6 @@ include config.mk
 
 __ASUS_AURA__=0
 
-ifeq ($(__ASUS_AURA__), 1)
-	CFLAGS+=-D__ASUS_AURA__
-endif
-
 REQ = util
 COM =\
 	components/battery\
@@ -33,7 +29,13 @@ COM =\
 	components/uptime\
 	components/user\
 	components/volume\
-	components/wifi
+	components/wifi\
+
+ifeq ($(__ASUS_AURA__), 1)
+CFLAGS+=-D__ASUS_AURA__
+COM += components/asus
+endif
+
 
 all: slstatus
 
@@ -73,3 +75,7 @@ install: all
 uninstall:
 	rm -f "$(DESTDIR)$(PREFIX)/bin/slstatus"
 	rm -f "$(DESTDIR)$(MANPREFIX)/man1/slstatus.1"
+
+print:
+	@echo $(COM)
+	@echo $(COM:=.o)
