@@ -1,4 +1,4 @@
-## jvalc's build of slstatus
+## vladjv's build of slstatus
 
 ## Usage
 Get more information about the usage of my build, including useful keybindings
