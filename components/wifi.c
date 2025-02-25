@@ -69,14 +69,23 @@
 	wifi_essid(const char *interface)
 	{
 		static char id[IW_ESSID_MAX_SIZE+1];
+        int ret;
 		int sockfd;
 		struct iwreq wreq;
 
 		memset(&wreq, 0, sizeof(struct iwreq));
 		wreq.u.essid.length = IW_ESSID_MAX_SIZE+1;
-		if (esnprintf(wreq.ifr_name, sizeof(wreq.ifr_name), "%s",
-		              get_essid()) < 0)
-			return NULL;
+
+        
+        if (interface == NULL)
+            ret = esnprintf(wreq.ifr_name, sizeof(wreq.ifr_name), "%s",
+                          get_essid());
+        else
+            ret = esnprintf(wreq.ifr_name, sizeof(wreq.ifr_name), "%s",
+                          interface);
+        
+        if (ret < 0)
+            return NULL;
 
 		if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 			warn("socket 'AF_INET':");
@@ -162,10 +171,17 @@
 	const char *
 	wifi_essid(const char *interface)
 	{
+        int ret;
+
 		struct ieee80211_nodereq nr;
 
-		if (load_ieee80211_nodereq(interface, &nr))
-			return bprintf("%s", nr.nr_nwid);
+        if (interface == NULL)
+            ret = load_ieee80211_nodereq(get_essid(), &nr);
+        else
+            ret = load_ieee80211_nodereq(interface, &nr);
+
+        if (ret == 1)
+            return bprintf("%s", nr.nr_nwid);
 
 		return NULL;
 	}
@@ -243,6 +259,8 @@
 		int sockfd;
 		const char *fmt;
 
+        int ret;
+
 		if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 			warn("socket 'AF_INET':");
 			return NULL;
@@ -251,7 +269,13 @@
 		fmt = NULL;
 		len = sizeof(ssid);
 		memset(&ssid, 0, len);
-		if (load_ieee80211req(sockfd, interface, &ssid, IEEE80211_IOC_SSID, &len)) {
+
+        if (interface == NULL)
+            ret = load_ieee80211req(sockfd, get_essid(), &ssid, IEEE80211_IOC_SSID, &len);
+        else
+            ret = load_ieee80211req(sockfd, interface, &ssid, IEEE80211_IOC_SSID, &len);
+
+        if (ret == 1) {
 			if (len < sizeof(ssid))
 				len += 1;
 			else
