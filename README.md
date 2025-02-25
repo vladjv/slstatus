@@ -5,7 +5,7 @@ Get more information about the usage of my build, including useful keybindings
 by executing `man slstatus` in your terminal.
 
 ## Installation 
-- `git clone https://gitlab.com/jvalc/slstatus.git`
+- `git clone https://github.com/vladjv/slstatus.git`
 - `cd st`
 - `make`
 - `sudo make install`
