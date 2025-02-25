@@ -98,6 +98,9 @@ const char *volume_status(const char *card);
 const char *wifi_essid(const char *interface);
 const char *wifi_perc(const char *interface);
 
+/* net */
+const char *get_essid(void);
+
 /* asus */
 #if defined(__ASUS_AURA__)
 const char *get_gpu_mode(const char *);

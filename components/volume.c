@@ -133,7 +133,7 @@ failed:
     return 0;
 }
 
-const char *vol_perc(const char *unused) {
+const char *volume_perc(const char *unused) {
     struct control *c;
     int n, v, value;
 

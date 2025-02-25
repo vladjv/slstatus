@@ -80,10 +80,10 @@ static const struct arg args[] = {
     {volume_perc, "%s  ", "default"},
 //{run_command, "%s  ", "/usr/bin/pamixer --get-volume-human"},
 #elif defined(__OpenBSD__) || defined(__FreeBSD__)
-    {vol_perc, "%s% | ", NULL},
+    {volume_perc, "%s% | ", NULL},
 #endif
 
-    {wifi_essid, "  %s  ", "wlp2s0"},
+    {wifi_essid, "  %s  ", NULL},
 #if defined(__linux__)
     {battery_state, "%s ", "BAT0"},
     {battery_perc, "%s%  ", "BAT0"},

@@ -75,7 +75,7 @@
 		memset(&wreq, 0, sizeof(struct iwreq));
 		wreq.u.essid.length = IW_ESSID_MAX_SIZE+1;
 		if (esnprintf(wreq.ifr_name, sizeof(wreq.ifr_name), "%s",
-		              interface) < 0)
+		              get_essid()) < 0)
 			return NULL;
 
 		if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
